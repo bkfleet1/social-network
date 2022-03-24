@@ -18,7 +18,7 @@ const ReactionSchema = new Schema({
             type: String,
             required: true,
             trim: true,
-            default: UserSchema.path('username'),
+            // default: UserSchema.path('username'),
         }
     ],
     createdAt: {
