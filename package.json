@@ -1,0 +1,33 @@
+{
+  "name": "social-network",
+  "version": "1.0.0",
+  "description": "Social Network CRUD API Endpoints",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx nodemon server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/bkfleet1/social-network.git"
+  },
+  "keywords": [
+    "social network",
+    "API",
+    "social media",
+    "endpoint",
+    "CRUD",
+    "MongoDB",
+    "Mongoose"
+  ],
+  "author": "Brad Kelley",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bkfleet1/social-network/issues"
+  },
+  "homepage": "https://github.com/bkfleet1/social-network#readme",
+  "dependencies": {
+    "express": "^4.17.3",
+    "mongoose": "^6.2.8"
+  }
+}
