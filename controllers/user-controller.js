@@ -53,7 +53,7 @@ getUserById({ params }, res) {
       .catch(err => res.json(err));
   },
 
-// update user by id
+// update user by _id
 updateUser({ params, body }, res) {
   User.findOneAndUpdate({ _id: params.id }, body, { new: true, runValidators: true })
     .then(data => {
@@ -77,7 +77,49 @@ updateUser({ params, body }, res) {
         res.json({ message: `User record ${params.id} was successfully deleted!` });
       })
       .catch(err => res.status(400).json(err));
-  }
+  },
+
+  addFriend({ params }, res) {
+    User.findOneAndUpdate(
+      { _id: params.id },
+      { $push: { friends: params.friendId } },
+      { new: true, runValidators: true }
+    )
+    .populate({
+      path: 'friends',
+      select: '-__v'
+    })
+    .select('-__v')
+    .then(data => {
+      if (!data) {
+        res.status(404).json({ message: `No user record found with id: ${params.id}` });
+        return;
+      }
+      res.json(data);
+    })
+    .catch(err => res.json(err));
+}, 
+ // Remove friend's _id from user's friends: []
+ removeFriend({ params }, res) {
+  User.findOneAndUpdate(
+    { _id: params.id },
+    { $pull: { friends: params.friendId } },
+    { new: true, runValidators: true })
+  .populate({
+    path: 'friends',
+    select: '-__v'
+  })
+  .select('-__v')
+  .then(data => {
+    if (!data) {
+      res.status(404).json({ message: `No user record found with id: ${params.id}` });
+      return;
+    }
+    res.json(data);
+  })
+  .catch(err => res.status(400).json(err));
+} 
+
 };
 
 module.exports = userController;
