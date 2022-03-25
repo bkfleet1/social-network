@@ -18,7 +18,6 @@ const ReactionSchema = new Schema({
             type: String,
             required: true,
             trim: true,
-            // default: UserSchema.path('username'),
         }
     ],
     createdAt: {
@@ -27,7 +26,5 @@ const ReactionSchema = new Schema({
         get: (createdAtVal) => dateFormat(createdAtVal),
     }
 });
-
-// const Reaction = model("Reaction", ReactionSchema);
 
 module.exports = ReactionSchema;
