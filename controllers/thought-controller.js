@@ -34,27 +34,6 @@ const thoughtController = {
   },
 
   // add thought to user
-  // addThought({ params, body }, res) {
-  //   console.log(body);
-  //   Thought.create(body)
-  //     .then(({ _id }) => {
-  //       return User.findOneAndUpdate(
-  //         { _id: params.userId },
-  //         { $push: { thoughts: _id } },
-  //         { new: true, runValidators: true }
-  //       );
-  //     })
-  //     .then(data => {
-  //       if (!data) {
-  //         res.status(404).json({ message: `Unable to add a Thought.` });
-  //         return;
-  //       }
-  //       res.json(data);
-  //     })
-  //     .catch(err => res.json(err));
-  // },
-
-  // add thought to user
   addThought({ params, body }, res) {
     console.log(body);
     Thought.create(body)
@@ -135,11 +114,12 @@ const thoughtController = {
         )
           .then(data => {
             if (!data) {
-              res.status(404).json({ message: `No Thought record found with id: ${params.id}` });
+              // res.status(404).json({ message: `No Thought record found with id: ${params.id}` });
+              res.json({ message: `Thought record id: ${params.id} was successfully deleted` });
               return;
-            }
-            res.json({ message: `Thought record id: ${params.id} was successfully deleted` });
-          })
+            } else {
+              res.status(404).json({ message: `No Thought record found with id: ${params.id}` });
+          }})
           .catch(err => res.json(err));
       })
   },
@@ -152,11 +132,6 @@ const thoughtController = {
       { $pull: { reactions: body } },
       { new: true, runValidators: true }
       )
-      // .populate({
-      //   path: 'reactions',
-      //   select: '-__v'
-      // })
-      // .select('-__v')
       .then(data => {
         if (!data) {
           res.status(404).json({ message: `No Thought record found with id: ${params.id}` });
