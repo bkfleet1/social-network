@@ -13,6 +13,7 @@ const {
 router
   .route('/')
   .get(getAllThought)
+  .post(addThought);
 
 // /api/thoughts/<id>
 router
@@ -21,19 +22,18 @@ router
     .put(updateThought)
     .delete(removeThought);
   
-// /api/thoughts/<userId>
-router
-    .route('/:userId')
-    .post(addThought);
+
+
 
 // /api/thought/:thoughtId/reactions
 router
   .route('/:thoughtId/reactions')
-  .post(addReaction);
+  .post(addReaction)
+  .delete(removeReaction);
 
 // /api/thoughts/:thoughtId/reactionId
-router
-  .route('/:thoughtId/reactions/:reactionId')
-  .delete(removeReaction);
+// router
+//   .route('/:thoughtId/reactions/:reactionId')
+
 
 module.exports = router;

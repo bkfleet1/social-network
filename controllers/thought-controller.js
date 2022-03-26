@@ -34,25 +34,53 @@ const thoughtController = {
   },
 
   // add thought to user
+  // addThought({ params, body }, res) {
+  //   console.log(body);
+  //   Thought.create(body)
+  //     .then(({ _id }) => {
+  //       return User.findOneAndUpdate(
+  //         { _id: params.userId },
+  //         { $push: { thoughts: _id } },
+  //         { new: true, runValidators: true }
+  //       );
+  //     })
+  //     .then(data => {
+  //       if (!data) {
+  //         res.status(404).json({ message: `Unable to add a Thought.` });
+  //         return;
+  //       }
+  //       res.json(data);
+  //     })
+  //     .catch(err => res.json(err));
+  // },
+
+  // add thought to user
   addThought({ params, body }, res) {
     console.log(body);
     Thought.create(body)
-      .then(({ _id }) => {
-        return User.findOneAndUpdate(
-          { _id: params.userId },
-          { $push: { thoughts: _id } },
-          { new: true, runValidators: true }
+    .then(response => {
+      if (!response) {
+        return res.status(404).json({ message: `Unable to create a Thought record` }
         );
-      })
-      .then(data => {
-        if (!data) {
-          res.status(404).json({ message: `Unable to add a Thought.` });
-          return;
-        }
-        res.json(data);
-      })
+      }
+      else {
+        console.log(response)
+        User.findOneAndUpdate(
+          { userId: User._id },
+          { $push: { thoughts: response._id } },
+          { new: true, runValidators: true }
+        )
+          .then(data => {
+            if (!data) {
+              res.status(404).json({ message: `No Thought record found with id: ${User.userId}` });
+              return;
+            }
+            res.json({ message: `Thought record was successfully created` });
+          })
+      }})
       .catch(err => res.json(err));
   },
+
 
 
   // Create Reaction record and append to Thought
@@ -118,15 +146,28 @@ const thoughtController = {
 
 
   // remove reaction
-  removeReaction({ params }, res) {
+  removeReaction({ params, body }, res) {
     Thought.findOneAndUpdate(
       { _id: params.thoughtId },
-      { $pull: { reactions: { reactionId: params.reactionId } } },
+      { $pull: { reactions: body } },
       { new: true, runValidators: true }
-    )
-      .then(data => res.json(data))
-      .catch(err => res.json(err));
-  }
-};
+      )
+      // .populate({
+      //   path: 'reactions',
+      //   select: '-__v'
+      // })
+      // .select('-__v')
+      .then(data => {
+        if (!data) {
+          res.status(404).json({ message: `No Thought record found with id: ${params.id}` });
+          return;
+        }
+        res.json(data);
+      })
+      .catch(err => res.status(400).json(err));
+    } 
+    
+    };
+    
 
 module.exports = thoughtController;
