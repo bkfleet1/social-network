@@ -27,7 +27,7 @@
   },
   "homepage": "https://github.com/bkfleet1/social-network#readme",
   "dependencies": {
-    "express": "^4.17.3",
-    "mongoose": "^6.2.8"
+    "express": "*",
+    "mongoose": "*"
   }
 }
